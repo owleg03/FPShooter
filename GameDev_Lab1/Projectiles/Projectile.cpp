@@ -15,7 +15,13 @@ AProjectile::AProjectile()
 	SetupCollisionComponent();
 	SetupMovementComponent();
 	SetupMeshComponent();
-	InitialLifeSpan = LifeSpan;
+
+	DirectionNormal = FVector::ZeroVector;
+	SpiralAngle = 0.0f;
+	SpiralDeviation = 20.0f;
+	SpiralSpeed = 15.0f;
+	CurrentTick = 0.0f;
+	
 	CollissionComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
 	CollissionComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
@@ -34,8 +40,8 @@ void AProjectile::SetupMovementComponent()
 {
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
 	MovementComponent->SetUpdatedComponent(RootComponent);
-	MovementComponent->InitialSpeed = 3000.0f;
-	MovementComponent->MaxSpeed = 3000.0f;
+	MovementComponent->InitialSpeed = 100.0f;
+	MovementComponent->MaxSpeed = 100.0f;
 	MovementComponent->bRotationFollowsVelocity = true;
 	MovementComponent->bShouldBounce = true;
 	MovementComponent->Bounciness = 0.2f;
@@ -76,10 +82,34 @@ void AProjectile::BeginPlay()
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	++CurrentTick;
+
+	// Not yet fired
+	if (DirectionNormal == FVector::ZeroVector)
+	{
+		return;
+	}
+
+	const float SpiralY = SpiralDeviation * FMath::Cos(SpiralAngle);
+	const float SpiralZ = SpiralDeviation * FMath::Sin(SpiralAngle);
+	const FMatrix Rotation = FRotationMatrix(GetActorRotation());
+	const FVector Position = Rotation.TransformPosition(FVector(0.0f, SpiralY, SpiralZ));
+	const FVector Direction = DirectionNormal * MovementComponent->InitialSpeed * DeltaTime;
+	const FVector Location = GetActorLocation() + Direction + Position;
+	SetActorLocation(Location);
+
+	SpiralAngle += SpiralSpeed * DeltaTime;
+	if (SpiralDeviation > 0.0f && CurrentTick % 30 == 0)
+	{
+		--SpiralDeviation;
+		CurrentTick = 0;
+		UE_LOG(LogTemp, Warning, TEXT("Spiral deviation: %f"), SpiralDeviation);
+	}
 }
 
-void AProjectile::FireInDirection(const FVector& Direction) const
+void AProjectile::FireInDirection(const FVector& Direction)
 {
+	DirectionNormal = Direction.GetSafeNormal();
 	MovementComponent->Velocity = Direction * MovementComponent->InitialSpeed;
 }
 

@@ -27,9 +27,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category=Projectile)
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(EditAnywhere, Category=Projectile)
-	float LifeSpan = 3.0f;
-
 	UFUNCTION()
 	void OnHit(
 		UPrimitiveComponent* HitComponent,
@@ -45,9 +42,15 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void FireInDirection(const FVector& Direction) const;
+	void FireInDirection(const FVector& Direction);
 
 private:
+	float SpiralAngle;
+	float SpiralDeviation;
+	float SpiralSpeed;
+	FVector DirectionNormal;
+	int CurrentTick;
+	
 	void SetupCollisionComponent();
 	void SetupMovementComponent();
 	void SetupMeshComponent();

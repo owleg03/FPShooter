@@ -151,7 +151,7 @@ void AMainCharacter::Fire()
   SpawnParameters.Instigator = GetInstigator();
   SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-  const AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+  AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
       ProjectileClass,
       MuzzleLocation,
       MuzzleRotation,
