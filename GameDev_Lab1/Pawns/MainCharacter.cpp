@@ -3,6 +3,7 @@
 
 #include "MainCharacter.h"
 
+#include "PhysXInterfaceWrapperCore.h"
 #include "GameFramework/PawnMovementComponent.h"
 
 // Sets default values
@@ -84,19 +85,20 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
   PlayerInputComponent->BindAction("Crouch", IE_Pressed, this, &AMainCharacter::StartCrouch);
   PlayerInputComponent->BindAction("Crouch", IE_Released, this, &AMainCharacter::EndCrouch);
   PlayerInputComponent->BindAction("TurnAround", IE_Pressed, this, &AMainCharacter::TurnAround);
+  PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AMainCharacter::Fire);
 }
 
 // Handles forward/backward movement
 void AMainCharacter::MoveForward(float Value)
 {
-  FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
+  const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::X);
   AddMovementInput(Direction, Value);
 }
 
 // Handles right/left movement
 void AMainCharacter::MoveRight(float Value)
 {
-  FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
+  const FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
   AddMovementInput(Direction, Value);
 }
 
@@ -128,4 +130,36 @@ void AMainCharacter::EndCrouch()
 void AMainCharacter::TurnAround()
 {
   AddControllerYawInput(360.f);
+}
+
+// Handles firing a weapon
+void AMainCharacter::Fire()
+{
+  if (!ProjectileClass)
+  {
+    return;
+  } 
+  
+  FVector CameraLocation;
+  FRotator CameraRotation;
+  GetActorEyesViewPoint(CameraLocation, CameraRotation);
+
+  const FVector MuzzleLocation = CameraLocation + FTransform(CameraRotation).TransformVector(MuzzleOffset);
+  const FRotator MuzzleRotation = CameraRotation;
+  FActorSpawnParameters SpawnParameters;
+  SpawnParameters.Owner = this;
+  SpawnParameters.Instigator = GetInstigator();
+  SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+  const AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+      ProjectileClass,
+      MuzzleLocation,
+      MuzzleRotation,
+      SpawnParameters
+  );
+  if (Projectile)
+  {
+    const FVector LaunchDirection = MuzzleRotation.Vector();
+    Projectile->FireInDirection(LaunchDirection);
+  }
 }

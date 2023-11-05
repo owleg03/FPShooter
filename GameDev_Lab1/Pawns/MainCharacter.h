@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameDev_Lab1/Projectiles/Projectile.h"
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
@@ -26,6 +27,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere)
 	USkeletalMeshComponent* GunSkeletalMeshComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector MuzzleOffset;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AProjectile> ProjectileClass;
 	
 public:	
 	// Called every frame
@@ -61,6 +68,10 @@ public:
 	// Handles turning around
 	UFUNCTION()
 	void TurnAround();
+
+	// Handles firing a weapon
+	UFUNCTION()
+	void Fire();
 
 private:
 	void SetupCameraComponent();
