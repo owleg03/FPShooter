@@ -54,6 +54,30 @@ void AProjectile::SetupMeshComponent()
 	MeshComponent->SetupAttachment(RootComponent);
 }
 
+void AProjectile::AlterTrajectory(float DeltaTime) {
+	// Not yet fired
+	if (DirectionNormal == FVector::ZeroVector)
+	{
+		return;
+	}
+
+	const float SpiralY = SpiralDeviation * FMath::Cos(SpiralAngle);
+	const float SpiralZ = SpiralDeviation * FMath::Sin(SpiralAngle);
+	const FMatrix Rotation = FRotationMatrix(GetActorRotation());
+	const FVector Position = Rotation.TransformPosition(FVector(0.0f, SpiralY, SpiralZ));
+	const FVector Direction = DirectionNormal * MovementComponent->InitialSpeed * DeltaTime;
+	const FVector Location = GetActorLocation() + Direction + Position;
+	SetActorLocation(Location);
+
+	SpiralAngle += SpiralSpeed * DeltaTime;
+	if (SpiralDeviation > 0.0f && CurrentTick % 30 == 0)
+	{
+		--SpiralDeviation;
+		CurrentTick = 0;
+		UE_LOG(LogTemp, Warning, TEXT("Spiral deviation: %f"), SpiralDeviation);
+	}
+}
+
 void AProjectile::OnHit(
 	UPrimitiveComponent* HitComponent,
 	AActor* OtherActor,
@@ -83,28 +107,7 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	++CurrentTick;
-
-	// Not yet fired
-	if (DirectionNormal == FVector::ZeroVector)
-	{
-		return;
-	}
-
-	const float SpiralY = SpiralDeviation * FMath::Cos(SpiralAngle);
-	const float SpiralZ = SpiralDeviation * FMath::Sin(SpiralAngle);
-	const FMatrix Rotation = FRotationMatrix(GetActorRotation());
-	const FVector Position = Rotation.TransformPosition(FVector(0.0f, SpiralY, SpiralZ));
-	const FVector Direction = DirectionNormal * MovementComponent->InitialSpeed * DeltaTime;
-	const FVector Location = GetActorLocation() + Direction + Position;
-	SetActorLocation(Location);
-
-	SpiralAngle += SpiralSpeed * DeltaTime;
-	if (SpiralDeviation > 0.0f && CurrentTick % 30 == 0)
-	{
-		--SpiralDeviation;
-		CurrentTick = 0;
-		UE_LOG(LogTemp, Warning, TEXT("Spiral deviation: %f"), SpiralDeviation);
-	}
+	AlterTrajectory(DeltaTime);
 }
 
 void AProjectile::FireInDirection(const FVector& Direction)

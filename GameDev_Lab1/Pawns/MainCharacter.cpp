@@ -59,7 +59,8 @@ void AMainCharacter::BeginPlay()
   GunSkeletalMeshComponent->AttachToComponent(
       GetMesh(),
       FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
-      TEXT("WeaponPoint"));
+      TEXT("WeaponPoint")
+  );
 }
 
 // Called every frame

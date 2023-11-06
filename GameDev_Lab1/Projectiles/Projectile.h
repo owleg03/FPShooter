@@ -54,4 +54,5 @@ private:
 	void SetupCollisionComponent();
 	void SetupMovementComponent();
 	void SetupMeshComponent();
+	void AlterTrajectory(float DeltaTime);
 };
