@@ -19,7 +19,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
-	USphereComponent* CollissionComponent;
+	USphereComponent* CollisionComponent;
 
 	UPROPERTY(VisibleAnywhere, Category=Movement)
 	UProjectileMovementComponent* MovementComponent;

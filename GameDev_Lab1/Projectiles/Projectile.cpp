@@ -18,21 +18,20 @@ AProjectile::AProjectile()
 
 	DirectionNormal = FVector::ZeroVector;
 	SpiralAngle = 0.0f;
-	SpiralDeviation = 20.0f;
-	SpiralSpeed = 15.0f;
+	SpiralDeviation = 10.0f;
+	SpiralSpeed = 10.0f;
 	CurrentTick = 0.0f;
 	
-	CollissionComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
-	CollissionComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
+	CollisionComponent->BodyInstance.SetCollisionProfileName(TEXT("Projectile"));
 }
 
 void AProjectile::SetupCollisionComponent()
 {
-	if (!CollissionComponent)
+	if (!CollisionComponent)
 	{
-		CollissionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
-		CollissionComponent->InitSphereRadius(10.0f);
-		RootComponent = CollissionComponent;
+		CollisionComponent = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComponent"));
+		CollisionComponent->InitSphereRadius(10.0f);
+		RootComponent = CollisionComponent;
 	}
 }
 
@@ -85,11 +84,12 @@ void AProjectile::OnHit(
 	FVector NormalImpulse,
 	const FHitResult& Hit)
 {
-	static const float Impulse = 100.0f;
-
+	UE_LOG(LogTemp, Warning, TEXT("OnHit called"));
+	SpiralSpeed = 0.0f;
+	
 	if (OtherActor != this && OtherComponent->IsSimulatingPhysics())
 	{
-		OtherComponent->AddImpulseAtLocation(MovementComponent->Velocity * Impulse, Hit.ImpactPoint);
+		OtherComponent->AddImpulseAtLocation(MovementComponent->Velocity * 100.0f, Hit.ImpactPoint);
 	}
 
 	Destroy();
@@ -99,7 +99,7 @@ void AProjectile::OnHit(
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CollisionComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 }
 
 // Called every frame
