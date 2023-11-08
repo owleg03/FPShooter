@@ -33,6 +33,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AProjectile> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int AmmoCount;
 	
 public:	
 	// Called every frame
@@ -70,7 +73,7 @@ public:
 	void TurnAround();
 
 	// Handles firing a weapon
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void Fire();
 
 private:

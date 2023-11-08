@@ -39,8 +39,8 @@ void AProjectile::SetupMovementComponent()
 {
 	MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("MovementComponent"));
 	MovementComponent->SetUpdatedComponent(RootComponent);
-	MovementComponent->InitialSpeed = 100.0f;
-	MovementComponent->MaxSpeed = 100.0f;
+	MovementComponent->InitialSpeed = 1000.0f;
+	MovementComponent->MaxSpeed = 1000.0f;
 	MovementComponent->bRotationFollowsVelocity = true;
 	MovementComponent->bShouldBounce = true;
 	MovementComponent->Bounciness = 0.2f;

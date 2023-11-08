@@ -11,6 +11,7 @@ AMainCharacter::AMainCharacter()
 {
   // Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
   PrimaryActorTick.bCanEverTick = true;
+  AmmoCount = 30;
 
   // Enable crouching
   UPawnMovementComponent* MovementComponent = ACharacter::GetMovementComponent();
