@@ -18,6 +18,9 @@ public:
 	AProjectile();
 
 protected:
+	UPROPERTY(EditAnywhere)
+	bool bEnableAlteredTrajectory = false;
+	
 	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
 	USphereComponent* CollisionComponent;
 

@@ -107,7 +107,10 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	++CurrentTick;
-	AlterTrajectory(DeltaTime);
+	if (bEnableAlteredTrajectory)
+	{
+		AlterTrajectory(DeltaTime);
+	}
 }
 
 void AProjectile::FireInDirection(const FVector& Direction)
