@@ -6,13 +6,10 @@
 // Sets default values
 AEnemyCarpenter::AEnemyCarpenter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	SetupChairStaticMeshComponent();
+    AEnemyCarpenter::SetupMeshComponents();
 }
 
-void AEnemyCarpenter::SetupChairStaticMeshComponent()
+void AEnemyCarpenter::SetupMeshComponents()
 {
 	// Create and attach a gun skeletal mesh component
 	ChairStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ChairStaticMeshComponent"));
@@ -36,12 +33,5 @@ void AEnemyCarpenter::BeginPlay()
 void AEnemyCarpenter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AEnemyCarpenter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }

@@ -6,14 +6,10 @@
 // Sets default values
 AEnemySwordsman::AEnemySwordsman()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
-	SetupSwordSkeletalMeshComponent();
-
+    AEnemySwordsman::SetupMeshComponents();
 }
 
-void AEnemySwordsman::SetupSwordSkeletalMeshComponent()
+void AEnemySwordsman::SetupMeshComponents()
 {
 	SwordSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SwordSkeletalMeshComponent"));
 	SwordSkeletalMeshComponent->SetupAttachment(GetMesh());
@@ -37,12 +33,5 @@ void AEnemySwordsman::BeginPlay()
 void AEnemySwordsman::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-}
-
-// Called to bind functionality to input
-void AEnemySwordsman::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 }

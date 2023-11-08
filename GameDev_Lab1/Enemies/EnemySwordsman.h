@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "EnemyBase.h"
 #include "EnemySwordsman.generated.h"
 
 UCLASS()
-class GAMEDEV_LAB1_API AEnemySwordsman : public ACharacter
+class GAMEDEV_LAB1_API AEnemySwordsman : public AEnemyBase
 {
 	GENERATED_BODY()
 
@@ -26,9 +26,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 private:
-	void SetupSwordSkeletalMeshComponent();
+	virtual void SetupMeshComponents() override;
 };
