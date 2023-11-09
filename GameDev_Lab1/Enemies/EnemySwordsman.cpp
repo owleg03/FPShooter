@@ -11,8 +11,8 @@ AEnemySwordsman::AEnemySwordsman()
 
 void AEnemySwordsman::SetupMeshComponents()
 {
-	SwordSkeletalMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SwordSkeletalMeshComponent"));
-	SwordSkeletalMeshComponent->SetupAttachment(GetMesh());
+	SwordStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SwordStaticMeshComponent"));
+	SwordStaticMeshComponent->SetupAttachment(GetMesh());
 }
 
 
@@ -22,7 +22,7 @@ void AEnemySwordsman::BeginPlay()
 	Super::BeginPlay();
 
 	// Attach gun skeletal mesh to the main mesh
-	SwordSkeletalMeshComponent->AttachToComponent(
+	SwordStaticMeshComponent->AttachToComponent(
 		GetMesh(),
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
 		TEXT("SwordSocket")
