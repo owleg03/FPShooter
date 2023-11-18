@@ -7,6 +7,8 @@
 AEnemySwordsman::AEnemySwordsman()
 {
     AEnemySwordsman::SetupMeshComponents();
+	
+	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComponent"));
 }
 
 void AEnemySwordsman::SetupMeshComponents()
@@ -27,6 +29,9 @@ void AEnemySwordsman::BeginPlay()
 		FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
 		TEXT("SwordSocket")
 	);
+
+	// Subscribe to perception event
+	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AEnemySwordsman::OnActorPerceived);
 }
 
 // Called every frame
@@ -34,4 +39,29 @@ void AEnemySwordsman::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+// Called when another actor is spotted
+void AEnemySwordsman::OnActorPerceived(AActor* Actor, FAIStimulus Stimulus)
+{
+	if (Stimulus.WasSuccessfullySensed())
+	{
+		PerceivedActor = Actor;
+	}
+}
+
+// Identifies enemy's team
+FGenericTeamId AEnemySwordsman::GetGenericTeamId() const
+{
+	return TeamId.GetId();
+}
+
+// Specifies enemy's attitude towards an actor
+ETeamAttitude::Type AEnemySwordsman::GetTeamAttitudeTowards(const AActor& Other) const
+{
+	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(&Other);
+	const ETeamAttitude::Type Temp = OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() == PlayersTeam ?
+		ETeamAttitude::Hostile :
+		ETeamAttitude::Neutral;
+	return Temp;
 }

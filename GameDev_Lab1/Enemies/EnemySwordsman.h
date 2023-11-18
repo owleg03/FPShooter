@@ -4,10 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "EnemyBase.h"
+#include "GameDev_Lab1/Common/EnemyTeamId.h"
+#include "Perception/AIPerceptionComponent.h"
 #include "EnemySwordsman.generated.h"
 
 UCLASS()
-class GAMEDEV_LAB1_API AEnemySwordsman : public AEnemyBase
+class GAMEDEV_LAB1_API AEnemySwordsman : public AEnemyBase, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -21,11 +23,27 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* SwordStaticMeshComponent;
+	
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAcces = "true"))
+	UAIPerceptionComponent*	PerceptionComponent;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	AActor* PerceivedActor;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	// Called when another actor is spotted
+	void OnActorPerceived(AActor* Actor, FAIStimulus Stimulus);
+
+	// Identifies enemy's team
+	virtual FGenericTeamId GetGenericTeamId() const override;
+
+	// Specifies enemy's attitude towards an actor
+	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
+
 private:
 	virtual void SetupMeshComponents() override;
+	FEnemyTeamId TeamId;
 };

@@ -165,3 +165,9 @@ void AMainCharacter::Fire()
     Projectile->FireInDirection(LaunchDirection);
   }
 }
+
+// Identifies the player's team
+FGenericTeamId AMainCharacter::GetGenericTeamId() const
+{
+  return TeamId.GetId();
+}

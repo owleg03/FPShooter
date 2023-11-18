@@ -3,14 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameDev_Lab1/Common/PlayerTeamId.h"
 #include "GameDev_Lab1/Projectiles/Projectile.h"
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
 UCLASS()
-class GAMEDEV_LAB1_API AMainCharacter : public ACharacter
+class GAMEDEV_LAB1_API AMainCharacter : public ACharacter, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 
@@ -76,7 +78,11 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();
 
+	// Identifies the player's team
+	virtual FGenericTeamId GetGenericTeamId() const override;
+
 private:
 	void SetupCameraComponent();
 	void SetupGunSkeletalMeshComponent();
+	FPlayerTeamId TeamId;
 };
