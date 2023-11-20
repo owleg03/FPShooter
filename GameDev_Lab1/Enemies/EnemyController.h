@@ -20,10 +20,22 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	FName PatrolTargetKey;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	FName HasLineOfSightKey;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	FName DetectedObjectKey;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	FName LastKnownLocationKey;
 	
 public:
 	AEnemyController();
 	
 	float GetPatrolRadius() const;
 	const FName& GetPatrolTargetKey() const;
+	const FName& GetHasLineOfSightKey() const;
+	const FName& GetDetectedObjectKey() const;
+	const FName& GetLastKnownLocationKey() const;
 };

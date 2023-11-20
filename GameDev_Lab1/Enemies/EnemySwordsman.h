@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "EnemyBase.h"
+#include "EnemyController.h"
 #include "GameDev_Lab1/Common/EnemyTeamId.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "EnemySwordsman.generated.h"
@@ -29,6 +30,21 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	AActor* PerceivedActor;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	float RunningSpeed;
+	
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	float WalkingSpeed;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	bool bIsRunning;
+
+	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
+	bool bHasLineOfSight;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	float TargetLostTime;
 
 public:	
 	// Called every frame
@@ -43,7 +59,19 @@ public:
 	// Specifies enemy's attitude towards an actor
 	virtual ETeamAttitude::Type GetTeamAttitudeTowards(const AActor& Other) const override;
 
+	// Switches movement speed to running speed
+	UFUNCTION(BlueprintCallable)
+	void SwitchToRunningSpeed();
+	
+	UFUNCTION(BlueprintCallable)
+	// Switches movement speed to walking speed
+	void SwitchToWalkingSpeed();
+
 private:
 	virtual void SetupMeshComponents() override;
 	FEnemyTeamId TeamId;
+	float TargetLostElapsed;
+	float LastLocationElapsed;
+	float LastLocationUpdateTime;
+	AEnemyController* EnemyController;
 };

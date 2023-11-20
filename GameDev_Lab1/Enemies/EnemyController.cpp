@@ -7,6 +7,9 @@ AEnemyController::AEnemyController()
 {
 	PatrolRadius = 150.0f;
 	PatrolTargetKey = "PatrolTarget";
+	HasLineOfSightKey = "HasLineOfSight";
+	DetectedObjectKey = "DetectedObject";
+	LastKnownLocationKey = "LastKnownLocation";
 }
 
 float AEnemyController::GetPatrolRadius() const
@@ -17,4 +20,19 @@ float AEnemyController::GetPatrolRadius() const
 const FName& AEnemyController::GetPatrolTargetKey() const
 {
 	return PatrolTargetKey;
+}
+
+const FName& AEnemyController::GetHasLineOfSightKey() const
+{
+	return HasLineOfSightKey;
+}
+
+const FName& AEnemyController::GetDetectedObjectKey() const
+{
+	return DetectedObjectKey;
+}
+
+const FName& AEnemyController::GetLastKnownLocationKey() const
+{
+	return LastKnownLocationKey;
 }
