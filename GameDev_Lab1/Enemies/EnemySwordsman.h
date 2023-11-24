@@ -51,9 +51,11 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	// Called when another actor is spotted
+	UFUNCTION()
 	void OnActorPerceived(AActor* Actor, FAIStimulus Stimulus);
 
 	// Identifies enemy's team
+	UFUNCTION()
 	virtual FGenericTeamId GetGenericTeamId() const override;
 
 	// Specifies enemy's attitude towards an actor

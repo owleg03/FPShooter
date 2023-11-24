@@ -14,6 +14,12 @@
 // Sets default values
 AEnemySwordsman::AEnemySwordsman()
 {
+	bIsRunning = true;
+	bHasLineOfSight = false;
+	TargetLostElapsed = 0.f;
+	LastLocationElapsed = 0.f;
+	LastLocationUpdateTime = 0.5f;
+	
     AEnemySwordsman::SetupMeshComponents();
 	
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(TEXT("PerceptionComponent"));
@@ -33,11 +39,6 @@ void AEnemySwordsman::BeginPlay()
 	
 	RunningSpeed = GetCharacterMovement()->MaxWalkSpeed;
 	WalkingSpeed = RunningSpeed / 4;
-	bIsRunning = false;
-	bHasLineOfSight = false;
-	TargetLostElapsed = 0.f;
-	LastLocationElapsed = 0.f;
-	LastLocationUpdateTime = 0.5f;
 	EnemyController = Cast<AEnemyController>(Controller);
 	
 
