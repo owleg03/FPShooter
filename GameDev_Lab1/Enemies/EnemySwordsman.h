@@ -75,5 +75,6 @@ private:
 	float TargetLostElapsed;
 	float LastLocationElapsed;
 	float LastLocationUpdateTime;
+	
 	AEnemyController* EnemyController;
 };

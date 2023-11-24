@@ -14,11 +14,14 @@
 // Sets default values
 AEnemySwordsman::AEnemySwordsman()
 {
+	PrimaryActorTick.bCanEverTick = true;
+	
 	bIsRunning = true;
 	bHasLineOfSight = false;
 	TargetLostElapsed = 0.f;
 	LastLocationElapsed = 0.f;
 	LastLocationUpdateTime = 0.5f;
+	TargetLostTime = 100.f;
 	
     AEnemySwordsman::SetupMeshComponents();
 	
