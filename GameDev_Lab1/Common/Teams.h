@@ -3,5 +3,6 @@
 enum ETeams : uint8
 {
 	PlayersTeam,
-	EnemysTeam
+	EnemysTeam,
+	ProjectilesTeam
 };

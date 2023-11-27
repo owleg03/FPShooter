@@ -104,10 +104,18 @@ FGenericTeamId AEnemySwordsman::GetGenericTeamId() const
 ETeamAttitude::Type AEnemySwordsman::GetTeamAttitudeTowards(const AActor& Other) const
 {
 	const IGenericTeamAgentInterface* OtherTeamAgent = Cast<const IGenericTeamAgentInterface>(&Other);
-	const ETeamAttitude::Type Temp = OtherTeamAgent && OtherTeamAgent->GetGenericTeamId().GetId() == PlayersTeam ?
-		ETeamAttitude::Hostile :
-		ETeamAttitude::Neutral;
-	return Temp;
+	if (!OtherTeamAgent)
+	{
+		return ETeamAttitude::Neutral;
+	}
+	
+	const uint8 OtherTeamAgentGenericTeamId = OtherTeamAgent->GetGenericTeamId().GetId();
+	switch (OtherTeamAgentGenericTeamId)
+	{
+		case PlayersTeam: return ETeamAttitude::Hostile;
+		case ProjectilesTeam: return ETeamAttitude::Neutral;
+		default: return ETeamAttitude::Neutral;
+	}
 }
 
 // Switches movement speed to running speed

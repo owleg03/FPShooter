@@ -3,13 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericTeamAgentInterface.h"
 #include "Components/SphereComponent.h"
+#include "GameDev_Lab1/Common/ProjectileTeam.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
 
 UCLASS()
-class GAMEDEV_LAB1_API AProjectile : public AActor
+class GAMEDEV_LAB1_API AProjectile : public AActor, public IGenericTeamAgentInterface
 {
 	GENERATED_BODY()
 	
@@ -39,6 +41,10 @@ protected:
 		const FHitResult& Hit
 	);
 	
+	// Identifies enemy's team
+	UFUNCTION()
+	virtual FGenericTeamId GetGenericTeamId() const override;
+	
 	virtual void BeginPlay() override;
 
 public:	
@@ -53,6 +59,8 @@ private:
 	float SpiralSpeed;
 	FVector DirectionNormal;
 	int CurrentTick;
+	
+	FProjectileTeam TeamId;
 	
 	void SetupCollisionComponent();
 	void SetupMovementComponent();

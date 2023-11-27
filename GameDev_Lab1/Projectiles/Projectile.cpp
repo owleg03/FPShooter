@@ -119,3 +119,7 @@ void AProjectile::FireInDirection(const FVector& Direction)
 	MovementComponent->Velocity = Direction * MovementComponent->InitialSpeed;
 }
 
+FGenericTeamId AProjectile::GetGenericTeamId() const
+{
+	return TeamId.GetId();
+}
