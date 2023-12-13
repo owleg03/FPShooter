@@ -14,6 +14,9 @@ class GAMEDEV_LAB1_API UTaskPatrol : public UBTTaskNode
 {
 	GENERATED_BODY()
 
+	UPROPERTY(EditAnywhere)
+	UAnimationAsset* WalkAnimation;
+
 public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

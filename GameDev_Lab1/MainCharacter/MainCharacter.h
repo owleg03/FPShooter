@@ -27,8 +27,11 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	USkeletalMeshComponent* GunSkeletalMeshComponent;
+	
+	UPROPERTY(VisibleAnywhere)
+	UStaticMeshComponent* MagStaticMeshComponent;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector MuzzleOffset;
@@ -84,5 +87,6 @@ public:
 private:
 	void SetupCameraComponent();
 	void SetupGunSkeletalMeshComponent();
+	void SetupMagStaticMeshComponent();
 	FPlayerTeamId TeamId;
 };

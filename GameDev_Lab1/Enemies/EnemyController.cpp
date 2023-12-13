@@ -8,7 +8,8 @@ AEnemyController::AEnemyController()
 	PatrolRadius = 150.0f;
 	PatrolTargetKey = "PatrolTarget";
 	HasLineOfSightKey = "HasLineOfSight";
-	DetectedObjectKey = "DetectedObject";
+	DetectedEnemyKey = "DetectedEnemy";
+	IsObstacleDetectedKey = "IsObstacleDetected";
 	LastKnownLocationKey = "LastKnownLocation";
 }
 
@@ -27,9 +28,14 @@ const FName& AEnemyController::GetHasLineOfSightKey() const
 	return HasLineOfSightKey;
 }
 
-const FName& AEnemyController::GetDetectedObjectKey() const
+const FName& AEnemyController::GetDetectedEnemyKey() const
 {
-	return DetectedObjectKey;
+	return DetectedEnemyKey;
+}
+
+const FName& AEnemyController::GetIsObstacleDetectedKey() const
+{
+	return IsObstacleDetectedKey;
 }
 
 const FName& AEnemyController::GetLastKnownLocationKey() const

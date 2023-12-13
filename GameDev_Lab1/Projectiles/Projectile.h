@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GenericTeamAgentInterface.h"
 #include "Components/SphereComponent.h"
-#include "GameDev_Lab1/Common/ProjectileTeam.h"
+#include "GameDev_Lab1/Common/ProjectileTeamId.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Projectile.generated.h"
@@ -41,7 +41,7 @@ protected:
 		const FHitResult& Hit
 	);
 	
-	// Identifies enemy's team
+	// Identifies projectile's team
 	UFUNCTION()
 	virtual FGenericTeamId GetGenericTeamId() const override;
 	
@@ -60,7 +60,7 @@ private:
 	FVector DirectionNormal;
 	int CurrentTick;
 	
-	FProjectileTeam TeamId;
+	FProjectileTeamId TeamId;
 	
 	void SetupCollisionComponent();
 	void SetupMovementComponent();

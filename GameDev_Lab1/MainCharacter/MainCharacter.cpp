@@ -22,6 +22,7 @@ AMainCharacter::AMainCharacter()
 
   SetupCameraComponent();
   SetupGunSkeletalMeshComponent();
+  SetupMagStaticMeshComponent();
 }
 
 void AMainCharacter::SetupCameraComponent()
@@ -49,6 +50,16 @@ void AMainCharacter::SetupGunSkeletalMeshComponent()
   GunSkeletalMeshComponent->SetupAttachment(CameraComponent);
 }
 
+void AMainCharacter::SetupMagStaticMeshComponent()
+{
+  // Create and attach a mag skeletal mesh component
+  MagStaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MagStaticMeshComponent"));
+  MagStaticMeshComponent->bCastDynamicShadow = false;
+  MagStaticMeshComponent->CastShadow = false;
+  MagStaticMeshComponent->SetupAttachment(CameraComponent);
+}
+
+
 // Called when the game starts or when spawned
 void AMainCharacter::BeginPlay()
 {
@@ -61,6 +72,13 @@ void AMainCharacter::BeginPlay()
       GetMesh(),
       FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
       TEXT("WeaponPoint")
+      );
+
+  // Attach mag satic mesh to the main mesh
+  MagStaticMeshComponent->AttachToComponent(
+      GetMesh(),
+      FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true),
+      TEXT("MagPoint")
   );
 }
 

@@ -25,7 +25,10 @@ protected:
 	FName HasLineOfSightKey;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
-	FName DetectedObjectKey;
+	FName DetectedEnemyKey;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	FName IsObstacleDetectedKey;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
 	FName LastKnownLocationKey;
@@ -36,6 +39,7 @@ public:
 	float GetPatrolRadius() const;
 	const FName& GetPatrolTargetKey() const;
 	const FName& GetHasLineOfSightKey() const;
-	const FName& GetDetectedObjectKey() const;
+	const FName& GetDetectedEnemyKey() const;
+	const FName& GetIsObstacleDetectedKey() const;
 	const FName& GetLastKnownLocationKey() const;
 };

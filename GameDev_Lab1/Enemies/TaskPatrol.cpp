@@ -3,7 +3,9 @@
 
 #include "GameDev_Lab1/Enemies/TaskPatrol.h"
 
+#include "AIController.h"
 #include "EnemyController.h"
+#include "EnemySwordsman.h"
 #include "NavigationSystem.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -15,7 +17,6 @@ EBTNodeResult::Type UTaskPatrol::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 	{
 		return EBTNodeResult::Failed;
 	}
-
 	
 	FNavLocation ResultLocation;
 	const UNavigationSystemV1* NavigationSystemV1 = UNavigationSystemV1::GetNavigationSystem(&OwnerComp);
@@ -31,6 +32,14 @@ EBTNodeResult::Type UTaskPatrol::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 		EnemyController->GetBlackboardComponent()->SetValueAsVector(
 			EnemyController->GetPatrolTargetKey(),
 			ResultLocation.Location);
+
+		if (WalkAnimation)
+		{
+			APawn* Pawn = OwnerComp.GetAIOwner()->GetPawn();
+			const AEnemySwordsman* EnemySwordsman = Cast<AEnemySwordsman>(Pawn);
+			EnemySwordsman->GetMesh()->PlayAnimation(WalkAnimation, true);
+		}
+		
 		return EBTNodeResult::Succeeded;
 	}
 

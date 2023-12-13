@@ -9,8 +9,10 @@
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Bool.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Object.h"
 #include "BehaviorTree/Blackboard/BlackboardKeyType_Vector.h"
+#include "GameDev_Lab1/Projectiles/Projectile.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+class AProjectile;
 // Sets default values
 AEnemySwordsman::AEnemySwordsman()
 {
@@ -73,13 +75,22 @@ void AEnemySwordsman::Tick(float DeltaTime)
 		PerceivedActor = nullptr;
 		TargetLostElapsed = 0.f;
 		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Object>(
-			EnemyController->GetDetectedObjectKey(), PerceivedActor);
+			EnemyController->GetDetectedEnemyKey(), PerceivedActor);
 	}
 }
 
 // Called when another actor is spotted
 void AEnemySwordsman::OnActorPerceived(AActor* Actor, FAIStimulus Stimulus)
 {
+	const AProjectile* Projectile = Cast<AProjectile>(Actor);
+	if (Projectile)
+	{
+		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Bool>(
+			EnemyController->GetIsObstacleDetectedKey(), true);
+
+		return;
+	}
+	
 	bHasLineOfSight = Stimulus.WasSuccessfullySensed();
 
 	EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Bool>(
@@ -89,8 +100,10 @@ void AEnemySwordsman::OnActorPerceived(AActor* Actor, FAIStimulus Stimulus)
 	{
 		PerceivedActor = Actor;
 		TargetLostElapsed = 0.f;
-		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Object>(EnemyController->GetDetectedObjectKey(), PerceivedActor);
-		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(EnemyController->GetLastKnownLocationKey(), PerceivedActor->GetActorLocation());
+		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Object>(
+			EnemyController->GetDetectedEnemyKey(), PerceivedActor);
+		EnemyController->GetBlackboardComponent()->SetValue<UBlackboardKeyType_Vector>(
+			EnemyController->GetLastKnownLocationKey(), PerceivedActor->GetActorLocation());
 	}
 }
 
@@ -113,7 +126,7 @@ ETeamAttitude::Type AEnemySwordsman::GetTeamAttitudeTowards(const AActor& Other)
 	switch (OtherTeamAgentGenericTeamId)
 	{
 		case PlayersTeam: return ETeamAttitude::Hostile;
-		case ProjectilesTeam: return ETeamAttitude::Neutral;
+		case ProjectilesTeam: return ETeamAttitude::Hostile;
 		default: return ETeamAttitude::Neutral;
 	}
 }
